@@ -7,7 +7,7 @@ app = Flask(__name__)
 # Initialize the camera
 pi_camera = Picamera2()
 # Configure camera with the desired resolution
-pi_camera.configure(pi_camera.create_video_configuration({"size": (640, 480)}))
+pi_camera.configure(pi_camera.create_video_configuration({"size": (640*2, 480*2)}))
 pi_camera.start()
 
 def generate_frames():
