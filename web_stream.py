@@ -6,18 +6,20 @@ app = Flask(__name__)
 
 # Initialize the camera
 pi_camera = Picamera2()
-pi_camera.configure(pi_camera.create_video_configuration())
+# Set a higher frame rate and lower resolution
+pi_camera.configure(pi_camera.create_video_configuration({"size": (640, 480), "framerate": 30}))
 pi_camera.start()
 
 def generate_frames():
     while True:
         # Capture frame-by-frame
         frame = pi_camera.capture_array()
-        # Resize or process the frame if needed
-        frame = cv2.resize(frame, (640, 480))
+        
+        # Resize to reduce data per frame
+        frame = cv2.resize(frame, (320, 240))
 
-        # Encode the frame in JPEG format
-        ret, buffer = cv2.imencode('.jpg', frame)
+        # Encode frame to JPEG with lower quality for faster streaming
+        ret, buffer = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 80])
         frame = buffer.tobytes()
 
         # Concatenate frame bytes to create a streaming HTTP response
@@ -45,5 +47,5 @@ def index():
     '''
 
 if __name__ == "__main__":
-    # Start the Flask app
-    app.run(host="0.0.0.0", port=5000)
+    # Start the Flask app in threaded mode
+    app.run(host="0.0.0.0", port=5000, threaded=True)
