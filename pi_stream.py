@@ -16,6 +16,9 @@ sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 65536)
 windows_pc_ip = '192.168.10.135'  # Change this to your Windows PC's IP
 port = 5005
 
+# Define a maximum chunk size (e.g., 60,000 bytes)
+CHUNK_SIZE = 60000
+
 while True:
     # Capture frame
     frame = pi_camera.capture_array()
@@ -24,5 +27,9 @@ while True:
 
     # Encode frame to JPEG
     _, buffer = cv2.imencode('.jpg', frame)
-    # Send data to the Windows PC in chunks
-    sock.sendto(struct.pack("L", len(buffer)) + buffer.tobytes(), (windows_pc_ip, port))
+    buffer = buffer.tobytes()
+
+    # Send frame in chunks
+    for i in range(0, len(buffer), CHUNK_SIZE):
+        chunk = buffer[i:i + CHUNK_SIZE]
+        sock.sendto(struct.pack("L", len(chunk)) + chunk, (windows_pc_ip, port))
