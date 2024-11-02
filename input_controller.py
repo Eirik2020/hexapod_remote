@@ -3,7 +3,7 @@ import keyboard  # Requires the keyboard library
 import time
 
 # Server IP and port
-HOST = '192.168.10.135'  # Replace with the server's IP address
+HOST = '192.168.10.117'  # Replace with the server's IP address
 PORT = 12345
 
 # Connect to the server
