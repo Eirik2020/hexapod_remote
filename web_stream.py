@@ -15,7 +15,7 @@ def generate_frames():
         # Capture frame-by-frame
         frame = pi_camera.capture_array()
         
-        # Resize to reduce data per frame
+        # Resize to reduce data per frame for faster streaming
         frame = cv2.resize(frame, (320, 240))
 
         # Encode frame to JPEG with lower quality for faster streaming
@@ -33,7 +33,7 @@ def video_feed():
 
 @app.route('/')
 def index():
-    # HTML page to display the video stream
+    # HTML page to display the video stream at a larger size
     return '''
     <html>
     <head>
@@ -41,7 +41,7 @@ def index():
     </head>
     <body>
         <h1>Raspberry Pi Camera Stream</h1>
-        <img src="/video_feed">
+        <img src="/video_feed" width="640" height="480">
     </body>
     </html>
     '''
