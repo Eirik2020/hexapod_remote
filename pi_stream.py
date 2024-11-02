@@ -13,7 +13,7 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 65536)
 
 # Define the address of the Windows PC (replace with the IP address of your PC)
-windows_pc_ip = '192.168.X.X'  # Change this to your Windows PC's IP
+windows_pc_ip = '192.168.10.135'  # Change this to your Windows PC's IP
 port = 5005
 
 while True:
